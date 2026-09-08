@@ -10,7 +10,7 @@ L'objectif est de développer un prototype d'assistant documentaire spécialisé
 
 Le système repose sur une architecture RAG, c'est-à-dire Retrieval-Augmented Generation :
 
-`	ext
+```text
 Documents PDF
 → extraction du texte
 → découpage en chunks
@@ -19,18 +19,18 @@ Documents PDF
 → recherche sémantique
 → génération locale avec Llama 3.2 3B via Ollama
 → réponse sourcée dans Streamlit
-`
+```
 
 ## Architecture finale
 
 La version actuelle est entièrement locale et utilise :
 
-- **Embeddings** : sentence-transformers/all-MiniLM-L6-v2 via Hugging Face
+- **Embeddings** : `sentence-transformers/all-MiniLM-L6-v2` via Hugging Face
 - **Base vectorielle** : FAISS
 - **Modèle de génération** : Llama 3.2 3B via Ollama
 - **Interface utilisateur** : Streamlit
 - **Chargement PDF** : PyPDF / LangChain
-- **Découpage du texte** : RecursiveCharacterTextSplitter
+- **Découpage du texte** : `RecursiveCharacterTextSplitter`
 
 Aucune clé API OpenAI n'est nécessaire pour exécuter la version actuelle.
 
@@ -48,7 +48,7 @@ Aucune clé API OpenAI n'est nécessaire pour exécuter la version actuelle.
 
 ## Structure du projet
 
-`	ext
+```text
 financial-rag-assistant/
 ├── app.py
 ├── README.md
@@ -56,11 +56,11 @@ financial-rag-assistant/
 ├── src/
 │   ├── ask.py
 │   └── ingest.py
-`
+```
 
 Les fichiers suivants sont volontairement exclus du dépôt GitHub :
 
-`	ext
+```text
 .env
 .venv/
 data/
@@ -69,47 +69,47 @@ documents PDF
 index FAISS générés
 fichiers de cache
 fichiers temporaires
-`
+```
 
 ## Installation
 
 ### 1. Cloner le dépôt
 
-`ash
+```bash
 git clone https://github.com/Smailoid/financial-rag-assistant.git
 cd financial-rag-assistant
-`
+```
 
 ### 2. Créer un environnement virtuel
 
 Sous Windows PowerShell :
 
-`powershell
+```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-`
+```
 
 ### 3. Installer les dépendances Python
 
-`ash
+```bash
 pip install -r requirements.txt
-`
+```
 
 ### 4. Installer Ollama
 
 Installer Ollama localement, puis télécharger le modèle utilisé :
 
-`ash
+```bash
 ollama pull llama3.2:3b
-`
+```
 
 ### 5. Ajouter des documents PDF
 
 Créer localement le dossier suivant :
 
-`	ext
+```text
 data/reports/
-`
+```
 
 Puis y placer les documents PDF à analyser.
 
@@ -117,24 +117,24 @@ Les documents PDF ne sont pas inclus dans le dépôt GitHub.
 
 ### 6. Construire l'index FAISS
 
-`ash
+```bash
 python src/ingest.py
-`
+```
 
 ### 7. Lancer l'application Streamlit
 
-`ash
+```bash
 streamlit run app.py
-`
+```
 
 ## Fonctionnement
 
 Le pipeline suit les étapes suivantes :
 
-1. Les documents PDF sont chargés depuis le dossier data/reports/.
+1. Les documents PDF sont chargés depuis le dossier `data/reports/`.
 2. Le texte est extrait à partir des PDF.
 3. Les documents sont découpés en chunks.
-4. Les chunks sont transformés en embeddings avec ll-MiniLM-L6-v2.
+4. Les chunks sont transformés en embeddings avec `all-MiniLM-L6-v2`.
 5. Les embeddings sont stockés dans un index FAISS local.
 6. Lorsqu'un utilisateur pose une question, les passages les plus proches sont récupérés.
 7. Ces passages sont transmis comme contexte au modèle Llama 3.2 3B via Ollama.
